@@ -1,13 +1,12 @@
 var cityDateEl = document.querySelector('#city-date');
-var currentEl = document.querySelector('#current-weather');
-var forecastEl = document.querySelector('#forecast-weather');
+var currentEl = document.querySelector('#current');
+var forecastEl = document.querySelector('#forecast');
 
 // API key: dc2f3090dc723dd5dfe242a2abd2e604
 // Fetch information using the Current Weather endpoint
 var cityName = 'Atlanta';
 var currentDate = moment().format('MM/DD/YYYY');
 var currentUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&units=imperial&appid=dc2f3090dc723dd5dfe242a2abd2e604';
-var forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast/daily?q=' + cityName + '&cnt=5&units=imperial&appid=dc2f3090dc723dd5dfe242a2abd2e604';
 
 // Display searched city and current date
 cityDateEl.textContent = cityName + ' (' + currentDate + ')';
@@ -50,22 +49,34 @@ fetch (currentUrl).then(function(response) {
                     });
                 };
             });
+            // Create lat/lon coordinates and use URL this to fetch 7-day forecast
+            var oneCallUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + data.coord.lat + '&lon=' + data.coord.lon + '&units=imperial&exclude=minutely,hourly,alerts&appid=dc2f3090dc723dd5dfe242a2abd2e604';
+            fetch (oneCallUrl).then(function(response) {
+                if (response.ok) {
+                    response.json().then(function(data) {
+                        var dateEl = document.createElement('h3');
+                        dateEl.textContent = moment().add(1, 'days').format('MM/DD/YYYY');
+                        forecastEl.appendChild(dateEl);
+
+                        // Create weather icon and append
+                        var icon2El = document.createElement('img');
+                        icon2El.setAttribute('src', 'https://openweathermap.org/img/wn/' + data.daily[1].weather[0].icon + '.png');
+                        forecastEl.appendChild(icon2El);
+
+                        // Create temperature element and append
+                        var temp2El = document.createElement('p');
+                        temp2El.textContent = 'Temp: ' + data.daily[1].temp.day + ' °F';
+                        forecastEl.appendChild(temp2El);
+
+                        // Create humidity element and append
+                        var humid2El = document.createElement('p');
+                        humid2El.textContent = 'Humidity: ' + data.daily[1].humidity + ' %';
+                        forecastEl.appendChild(humid2El);
+                    });
+                };
+            });
         });
     } else {
         currentEl.textContent = 'Invalid search. Please try again.'
     };
 });
-
-
-// Fetch information using the Daily Forecast 16 days endpoint
-// fetch (forecastUrl).then(function(response) {
-//     if (response.ok) {
-//         response.json().then(function(data) {
-//             var dateEl = document.createElement('h3');
-//             dateEl = moment().format('MM/DD/YYYY');
-//             forecastEl.appendChild(dateEl);
-//         });
-//     } else {
-//         forecastEl.textContent = 'Invalid search. Please try again.'
-//     }
-// });
