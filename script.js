@@ -11,6 +11,7 @@ var cityUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + 
 // Display searched city and current date
 cityDateEl.textContent = cityName + ' (' + currentDate + ')';
 
+// Fetch data from OpenWeather API and modify DOM
 fetch (cityUrl).then(function(response) {
     if (response.ok) {
         response.json().then(function(data) {
@@ -36,7 +37,7 @@ fetch (cityUrl).then(function(response) {
 
             // Get lat/lon coordinates and use this to fetch UV index
             var latLonUrl = 'https://api.openweathermap.org/data/2.5/uvi?lat=' + data.coord.lat + '&lon=' + data.coord.lon + '&appid=dc2f3090dc723dd5dfe242a2abd2e604';
-            
+            // TODO: Run fetch for this URL and append 
 
             currentWeatherEl.appendChild(tempEl);
         });
