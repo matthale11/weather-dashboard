@@ -11,7 +11,7 @@
      <header class="col-12 bg-dark text-light text-center p-3">
          <h1>Weather Dashboard</h1>
      </header>
-     <aside class="col-4 bg-light p-3 float-left">
+     <aside class="col-3 bg-light p-3 float-left">
          <h2>Search for a City:</h2>
          <form>
             <input type='text' id='city-input'>
@@ -19,16 +19,14 @@
         </form>
         <div id='recent-searches'></div>
      </aside>
-     <main class='col-8 p-3 text-left float-right'>
+     <main class='col-9 p-3 text-left float-right'>
          <section>
             <h2 id='city-date'></h2> 
             <div id='current'></div>
          </section>
          <section>
              <h2>5-Day Forecast:</h2>
-             <div class='container row'>
-             <div id='forecast' class='card bg-primary text-light rounded p-2 m-2'></div>
-            </div>
+             <div id='forecast' class='container row'></div>
          </section>
      </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>

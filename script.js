@@ -54,24 +54,32 @@ fetch (currentUrl).then(function(response) {
             fetch (oneCallUrl).then(function(response) {
                 if (response.ok) {
                     response.json().then(function(data) {
-                        var dateEl = document.createElement('h3');
-                        dateEl.textContent = moment().add(1, 'days').format('MM/DD/YYYY');
-                        forecastEl.appendChild(dateEl);
+                        
+                        for (var i = 1; i < 6; i++) {
 
-                        // Create weather icon and append
-                        var icon2El = document.createElement('img');
-                        icon2El.setAttribute('src', 'https://openweathermap.org/img/wn/' + data.daily[1].weather[0].icon + '.png');
-                        forecastEl.appendChild(icon2El);
+                            var cardEl = document.createElement('div');
+                            cardEl.setAttribute('class', 'card bg-primary text-light rounded p-2 m-2');
+                            forecastEl.appendChild(cardEl);
 
-                        // Create temperature element and append
-                        var temp2El = document.createElement('p');
-                        temp2El.textContent = 'Temp: ' + data.daily[1].temp.day + ' °F';
-                        forecastEl.appendChild(temp2El);
-
-                        // Create humidity element and append
-                        var humid2El = document.createElement('p');
-                        humid2El.textContent = 'Humidity: ' + data.daily[1].humidity + ' %';
-                        forecastEl.appendChild(humid2El);
+                            var dateEl = document.createElement('h5');
+                            dateEl.textContent = moment().add(i, 'days').format('MM/DD/YYYY');
+                            cardEl.appendChild(dateEl);
+    
+                            // Create weather icon and append
+                            var icon2El = document.createElement('img');
+                            icon2El.setAttribute('src', 'https://openweathermap.org/img/wn/' + data.daily[i].weather[0].icon + '.png');
+                            cardEl.appendChild(icon2El);
+    
+                            // Create temperature element and append
+                            var temp2El = document.createElement('p');
+                            temp2El.textContent = 'Temp: ' + data.daily[i].temp.day + ' °F';
+                            cardEl.appendChild(temp2El);
+    
+                            // Create humidity element and append
+                            var humid2El = document.createElement('p');
+                            humid2El.textContent = 'Humidity: ' + data.daily[i].humidity + ' %';
+                            cardEl.appendChild(humid2El);
+                        };
                     });
                 };
             });
