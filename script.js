@@ -1,7 +1,7 @@
 var cityDateEl = document.querySelector('#city-date');
 var currentEl = document.querySelector('#current');
 var forecastEl = document.querySelector('#forecast');
-var submitBtn = document.getElementById('submit-button');
+var submitBtnEl = document.getElementById('submit-button');
 
 // Fetch data from OpenWeather API and modify DOM
 function getWeather (cityName) {
@@ -13,6 +13,8 @@ function getWeather (cityName) {
     fetch (currentUrl).then(function(response) {
         if (response.ok) {
             response.json().then(function(data) {
+
+                // TODO: Clear out current and forecast elements
 
                 // Display searched city and current date
                 cityDateEl.textContent = data.name + ' (' + currentDate + ')';
@@ -90,10 +92,11 @@ function getWeather (cityName) {
     });
 };
 
-submitBtn.addEventListener('click', function() {
+submitBtnEl.addEventListener('click', function(event) {
+    event.preventDefault();
     var cityName = document.getElementById('city-input').value;
-    console.log(cityName);
+    // TODO: Save city name to local storage
+
+    // TODO: Append to recent searches list
     getWeather(cityName);
 });
-
-// TODO: Save city name to local storage
