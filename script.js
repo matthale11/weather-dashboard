@@ -1,12 +1,13 @@
 var cityDateEl = document.querySelector('#city-date');
-var currentWeatherEl = document.querySelector('#current-weather');
-var forecastWeatherEl = document.querySelector('#forecast-weather');
+var currentEl = document.querySelector('#current-weather');
+var forecastEl = document.querySelector('#forecast-weather');
 
 // API key: dc2f3090dc723dd5dfe242a2abd2e604
 // Fetch information using the Current Weather endpoint
 var cityName = 'London';
 var currentDate = moment().format('MM/DD/YYYY');
 var cityUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&units=imperial&appid=dc2f3090dc723dd5dfe242a2abd2e604';
+var forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast/daily?q=' + cityName + '&cnt=5&units=imperial&appid=dc2f3090dc723dd5dfe242a2abd2e604';
 
 // Display searched city and current date
 cityDateEl.textContent = cityName + ' (' + currentDate + ')';
@@ -39,12 +40,23 @@ fetch (cityUrl).then(function(response) {
             var latLonUrl = 'https://api.openweathermap.org/data/2.5/uvi?lat=' + data.coord.lat + '&lon=' + data.coord.lon + '&appid=dc2f3090dc723dd5dfe242a2abd2e604';
             // TODO: Run fetch for this URL and append 
 
-            currentWeatherEl.appendChild(tempEl);
+            currentEl.appendChild(tempEl);
         });
     } else {
-        currentWeatherEl.textContent = 'Invalid search. Please try again.'
+        currentEl.textContent = 'Invalid search. Please try again.'
     }
 });
 
 
 // Fetch information using the Daily Forecast 16 days endpoint
+fetch (forecastUrl).then(function(response) {
+    if (response.ok) {
+        response.json().then(function(data) {
+            var dateEl = document.createElement('h3');
+            dateEl = moment().format('MM/DD/YYYY');
+            forecastEl.appendChild(dateEl);
+        });
+    } else {
+        forecastEl.textContent = 'Invalid search. Please try again.'
+    }
+});
