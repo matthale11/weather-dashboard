@@ -1,11 +1,7 @@
 var cityDateEl = document.querySelector('#city-date');
 var currentEl = document.querySelector('#current');
 var forecastEl = document.querySelector('#forecast');
-var submitBtn = document.getElementById('#submit-btn');
-
-// API key: dc2f3090dc723dd5dfe242a2abd2e604
-
-// TODO: Save city name to local storage
+var submitBtn = document.getElementById('submit-button');
 
 // Fetch data from OpenWeather API and modify DOM
 function getWeather (cityName) {
@@ -94,9 +90,10 @@ function getWeather (cityName) {
     });
 };
 
-
-submitBtn.addEventListener('submit', function() {
+submitBtn.addEventListener('click', function() {
     var cityName = document.getElementById('city-input').value;
     console.log(cityName);
     getWeather(cityName);
 });
+
+// TODO: Save city name to local storage
