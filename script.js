@@ -2,8 +2,12 @@ var cityDateEl = document.querySelector('#city-date');
 var currentEl = document.querySelector('#current');
 var forecastEl = document.querySelector('#forecast');
 var submitBtnEl = document.getElementById('submit-button');
+var recentCityEl = document.getElementById('recent-searches');
 
-// Fetch data from OpenWeather API and modify DOM
+// 
+var cities = localStorage.getItem('cities')? JSON.parse(localStorage.getItem('cities')) : [];
+
+// This function gets the current and forecast weather as well as rendering on the page
 function getWeather (cityName) {
 
     // Fetch information using the Current Weather endpoint
@@ -14,10 +18,11 @@ function getWeather (cityName) {
         if (response.ok) {
             response.json().then(function(data) {
 
-                // TODO: Clear out current and forecast elements
+                currentEl.innerHTML = '';
 
                 // Display searched city and current date
                 cityDateEl.textContent = data.name + ' (' + currentDate + ')';
+
                 // Create weather icon and append
                 var iconEl = document.createElement('img');
                 iconEl.setAttribute('src', 'https://openweathermap.org/img/wn/' + data.weather[0].icon + '.png');
@@ -47,7 +52,6 @@ function getWeather (cityName) {
                         var uviEl = document.createElement('p');
                         uviEl.textContent = 'UV Index: ' + data.value;
                         currentEl.appendChild(uviEl);
-                        // TODO: Color code UV index
                         });
                     };
                 });
@@ -57,6 +61,8 @@ function getWeather (cityName) {
                     if (response.ok) {
                         response.json().then(function(data) {
                             
+                            forecastEl.innerHTML = '';
+
                             for (var i = 1; i < 6; i++) {
 
                                 var cardEl = document.createElement('div');
@@ -92,11 +98,33 @@ function getWeather (cityName) {
     });
 };
 
+// This function creates buttons for each city previously entered
+function renderCities () {
+    recentCityEl.innerHTML = '';
+    for (var i =0; i < cities.length; i++) {
+        var cityBtn = document.createElement('button');
+        cityBtn.textContent = cities[i];
+        cityBtn.value = cities[i];
+        cityBtn.setAttribute('class', 'm-2 align-left');
+        cityBtn.addEventListener('click', getHistory);
+        recentCityEl.appendChild(cityBtn);
+    };
+};
+
+// This function runs getWeather for a saved city
+function getHistory (event) {
+    getWeather(event.target.value);
+};
+
+// Create an event listener to get weather when a new city name is entered
 submitBtnEl.addEventListener('click', function(event) {
     event.preventDefault();
     var cityName = document.getElementById('city-input').value;
-    // TODO: Save city name to local storage
-
-    // TODO: Append to recent searches list
+    // Save city name to local storage
+    cities.push(cityName);
+    localStorage.setItem('cities', JSON.stringify(cities));
     getWeather(cityName);
+    renderCities();
 });
+
+renderCities();
