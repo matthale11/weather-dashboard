@@ -49,9 +49,22 @@ function getWeather (cityName) {
                 fetch (uviUrl).then(function(response) {
                     if (response.ok) {
                         response.json().then(function(data) {
-                        var uviEl = document.createElement('p');
-                        uviEl.textContent = 'UV Index: ' + data.value;
+                        var uviEl = document.createElement('span');
+                        uviEl.textContent = 'UV Index: '
                         currentEl.appendChild(uviEl);
+                        var uvi2El = document.createElement('span')
+                        uvi2El.textContent = data.value;
+                        // Color code UV index (0-2 green, 3 - 5 yellow, 6-7 orange, 8-10 red)
+                        if (data.value < 3) {
+                            uvi2El.setAttribute('class', 'container text-white bg-success');
+                        } else if (data.value < 6) {
+                            uvi2El.setAttribute('class', 'container text-white bg-warning');
+                        } else if (data.value < 8) {
+                            uvi2El.setAttribute('class', 'container text-white bg-warning');
+                        } else {
+                            uvi2El.setAttribute('class', 'container text-white bg-danger');
+                        };
+                        currentEl.appendChild(uvi2El);
                         });
                     };
                 });
